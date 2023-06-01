@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity 	// Enable security config. This annotation denotes config for spring security.
@@ -30,8 +31,7 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-		    .csrf().disable()
+	    http.cors().and().csrf().disable()
 		     // make sure we use stateless session; session won't be used to store user's state.
 	            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	        .and()
@@ -46,12 +46,13 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 	        .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(super.authenticationManager(), jwtConfig))
 	        .addFilterAfter(new ValidateTokenFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
 	        .authorizeRequests()
-	        .antMatchers(HttpMethod.POST, "/v2/auth").permitAll()
+	        .antMatchers("/v2/auth/*").permitAll()
 		    // allow all POST requests 
 				/* .antMatchers(HttpMethod.GET, "/v2/signups").permitAll() */
 		    // any other requests must be authenticated
 		    .anyRequest().authenticated();
 	}
+	
 	
 	// Spring has UserDetailsService interface, which can be overridden to provide our implementation for fetching user from database (or any other source).
 	// The UserDetailsService object is used by the auth manager to load the user from database.
@@ -60,6 +61,17 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
+	
+	@Bean
+    public WebMvcConfigurer corsConfigurer()
+    {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("http://localhost:4200");
+            }
+        };
+    }
 	
 	@Bean
 	public JwtConfig jwtConfig() {
