@@ -49,7 +49,7 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 	        .addFilterAfter(new ValidateTokenFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
 	        .authorizeRequests()
 	        .antMatchers("/v2/auth/*").permitAll()
-	        .antMatchers("/v2/signups").permitAll()
+	     //   .antMatchers("/v2/signups").permitAll()
 		    // allow all POST requests 
 				/* .antMatchers(HttpMethod.GET, "/v2/signups").permitAll() */
 		    // any other requests must be authenticated

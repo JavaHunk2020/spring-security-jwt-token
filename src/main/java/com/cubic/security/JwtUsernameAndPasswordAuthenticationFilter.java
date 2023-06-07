@@ -118,6 +118,8 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 		jwtTokenResponse.setEmail("technohunk444@gmail.com");
 		jwtTokenResponse.setName(auth.getName());
 		
+		//{"username":"nagen@gmail.com","age":1002}
+		//Java object can be converted into JSON and vice-versa
 		String jsonStringData=new ObjectMapper().writeValueAsString(jwtTokenResponse);
 		
 		response.setContentType("application/json");
@@ -141,7 +143,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 		jwtTokenResponse.setMessage("Sorry , your token is not valid any more!");
 		String jsonStringData=new ObjectMapper().writeValueAsString(jwtTokenResponse);
 		response.setContentType("application/json");
-		response.setStatus(HttpStatus.FORBIDDEN.value());
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.getWriter().println(jsonStringData);
 
 	}

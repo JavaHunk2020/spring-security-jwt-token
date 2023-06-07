@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,7 @@ public class SignupRestController {
 	//http://localhost:3039/signups?sid=12 - >> Passing data as a part of query string
 	//http://localhost:3039/signups/12 //Passing data as a part of uri
 	@DeleteMapping("/signups/{sid}")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public MessageResponse deleteData(@PathVariable int sid) {
 		// code to fetch data from database
 		signupService.deleteById(sid);
