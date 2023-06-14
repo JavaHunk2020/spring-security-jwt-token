@@ -1,6 +1,7 @@
 package com.cubic.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -12,7 +13,6 @@ public class SignupDaoImpl implements SignupDao {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
 	
 	@Override
 	public Signup findByUsernameAndPassword(String username, String password) {
@@ -40,10 +40,11 @@ public class SignupDaoImpl implements SignupDao {
 	
 
 	@Override
-	public boolean findByUsername(String username) {
-		String sql = "select username from signup_tbl where username  = ? ";
-		List<String> signups = jdbcTemplate.query(sql,new Object[] {username} ,new BeanPropertyRowMapper<>(String.class));
-		return signups.size() > 0;
+	public Optional<Signup> findByUsername(String username) {
+		String sql = "select username,password,role from signup_tbl where username  = ? ";
+		List<Signup> signups = jdbcTemplate.query(sql,new Object[] {username} ,new BeanPropertyRowMapper<>(Signup.class));
+		Signup signup=signups.size()>0?signups.get(0):null;
+		return Optional.ofNullable(signup);
 	}
 	
 	@Override

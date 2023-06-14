@@ -53,7 +53,7 @@ public class SignupServiceImpl implements SignupService {
 	
 	@Override
 	public boolean findByUsername(String username) {
-		return signupDao.findByUsername(username);
+		return signupDao.findByUsername(username).isPresent();
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,9 +50,10 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 	        .addFilterAfter(new ValidateTokenFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
 	        .authorizeRequests()
 	        .antMatchers("/v2/auth/*").permitAll()
+	        .antMatchers("/actuator/*").permitAll()
 	     //   .antMatchers("/v2/signups").permitAll()
 		    // allow all POST requests 
-				/* .antMatchers(HttpMethod.GET, "/v2/signups").permitAll() */
+			//.antMatchers(HttpMethod.GET, "/v2/signups").permitAll() 
 		    // any other requests must be authenticated
 		    .anyRequest().authenticated();
 	}

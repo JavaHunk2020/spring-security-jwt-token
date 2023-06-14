@@ -15,6 +15,7 @@ public class Signup {
 	private String mobile;
 	private String gender;
 	private String address;
+	private String role;
 	private String image;
 	
 	public int getSid() {
@@ -99,6 +100,14 @@ public class Signup {
 	public String toString() {
 		return "Signup [sid=" + sid + ", username=" + username + ", password=" + password + ", email=" + email
 				+ ", mobile=" + mobile + ", gender=" + gender + ", address=" + address + ", image=" + image + "]";
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	

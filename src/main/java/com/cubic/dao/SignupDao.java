@@ -1,6 +1,7 @@
 package com.cubic.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SignupDao {
 
@@ -12,6 +13,6 @@ public interface SignupDao {
 	void updateImage(int sid, String newimage);
 	Signup findByUsernameAndPassword(String username, String password);
 	void update(Signup signup);
-	boolean findByUsername(String username);
+	public Optional<Signup> findByUsername(String username);
 	void updatePassword(String username, String newpassword);
 }

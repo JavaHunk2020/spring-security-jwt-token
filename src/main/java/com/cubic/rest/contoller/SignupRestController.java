@@ -130,6 +130,7 @@ public class SignupRestController {
 	}
 
 	@GetMapping("/signups")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public List<SignupDTO> showAllData() {
 		List<SignupDTO> signups = signupService.findAll();
 		return signups; // this view name for JSP
